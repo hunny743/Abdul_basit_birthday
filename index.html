@@ -1,41 +1,703 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>ACCESS GRANTED // Birthday Protocol</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050914">
+<title>ACCESS GRANTED | Birthday Protocol</title>
+
 <style>
-:root{--bg:#020609;--cyan:#00e5ff;--green:#00ff9d;--red:#ff426d;--text:#d8f8ff;--muted:#78959d}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 15%,#0a2c35 0,#020609 52%,#010204 100%);color:var(--text);font-family:Consolas,Monaco,monospace;overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.09;background:repeating-linear-gradient(0deg,transparent 0 2px,#00e5ff 3px)}
-body:after{content:"01001001 00110010 01000001 00110100 01100011 01000011 01000101 01010011";position:fixed;left:-20%;top:45%;font-size:18px;letter-spacing:8px;color:#00e5ff;opacity:.035;white-space:nowrap;animation:drift 14s linear infinite;pointer-events:none}
-@keyframes drift{from{transform:translateX(0)}to{transform:translateX(120%)}}@keyframes pulse{0%,100%{box-shadow:0 0 8px #00e5ff18}50%{box-shadow:0 0 28px #00e5ff35}}@keyframes scan{0%{transform:translateY(-100%);opacity:0}15%{opacity:.8}100%{transform:translateY(500%);opacity:0}}@keyframes blink{50%{opacity:0}}@keyframes glitch{0%,90%,100%{transform:translate(0)}92%{transform:translate(2px,-2px)}94%{transform:translate(-2px,1px)}96%{transform:translate(1px,2px)}}@keyframes boot{0%{opacity:0;transform:translateX(-12px)}100%{opacity:1;transform:translateX(0)}}@keyframes unlock{0%{transform:scale(.7);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
-@keyframes success{0%{background:#00ff9d00;transform:scale(1)}25%{background:#00ff9d18;transform:scale(1.02)}60%{background:#00ff9d08;transform:scale(.99)}100%{background:#00ff9d00;transform:scale(1)}}
-@keyframes error{0%{background:#ff426d00;transform:translateX(0)}15%{background:#ff426d28;transform:translateX(-7px)}30%{transform:translateX(7px)}45%{transform:translateX(-5px)}60%{transform:translateX(5px)}75%{background:#ff426d10;transform:translateX(-2px)}100%{background:#ff426d00;transform:translateX(0)}}
-.wrap{width:min(900px,92%);margin:auto;padding:26px 0 60px}.screen{display:none;position:relative;border:1px solid #12404a;background:rgba(3,10,14,.95);border-radius:15px;padding:24px;overflow:hidden;animation:pulse 3s ease-in-out infinite}.screen.active{display:block}.screen:before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--cyan);box-shadow:0 0 18px var(--cyan);animation:scan 4s linear infinite}.screen.success{animation:success .7s ease-out,pulse 3s ease-in-out infinite}.screen.error{animation:error .75s ease-out,pulse 3s ease-in-out infinite}
-.logo{color:var(--cyan);letter-spacing:3px;font-size:12px}h1{font-size:clamp(30px,8vw,60px);margin:20px 0 10px;text-shadow:0 0 20px #00e5ff55;animation:glitch 4s infinite}h2{font-size:clamp(23px,6vw,40px)}.sub{color:var(--muted);line-height:1.75}
-.terminal{margin:25px 0;background:#010405;border:1px solid #123943;border-radius:10px;padding:18px;line-height:1.8;color:#8fffd1;min-height:210px}.bootline{display:block;opacity:0;animation:boot .5s forwards}.bootline:nth-child(1){animation-delay:.25s}.bootline:nth-child(2){animation-delay:.8s}.bootline:nth-child(3){animation-delay:1.35s}.bootline:nth-child(4){animation-delay:1.9s}.bootline:nth-child(5){animation-delay:2.45s}.bootline:nth-child(6){animation-delay:3s}.cursor{animation:blink .8s infinite}
-.btn,.option{display:block;width:100%;text-decoration:none;text-align:center;border:1px solid var(--cyan);background:#06171d;color:var(--cyan);padding:14px 16px;border-radius:8px;transition:.2s;cursor:pointer;font:inherit}.btn{margin-top:16px}.btn:hover,.option:hover{background:#0a2830;box-shadow:0 0 20px #00e5ff28;transform:translateY(-1px)}.options{display:grid;gap:11px;margin-top:20px}.option{border-color:#17404a;color:var(--text);text-align:left}.option:hover{border-color:var(--cyan)}.progress{height:7px;background:#081217;border-radius:8px;margin:18px 0;overflow:hidden}.bar{height:100%;background:linear-gradient(90deg,var(--cyan),var(--green));box-shadow:0 0 14px var(--cyan);animation:barPulse 1.4s ease-in-out infinite}@keyframes barPulse{50%{filter:brightness(1.5)}}
-.feedback{display:none;position:absolute;inset:0;z-index:5;pointer-events:none;align-items:center;justify-content:center;background:#020609cc;font-size:clamp(22px,6vw,42px);font-weight:bold;letter-spacing:3px;text-align:center}.feedback.show{display:flex;animation:unlock .25s ease-out}.feedback.success{color:var(--green);text-shadow:0 0 25px var(--green)}.feedback.error{color:var(--red);text-shadow:0 0 25px var(--red)}.feedback span{border:1px solid currentColor;padding:16px 20px;border-radius:10px;background:#020609e8}.final{text-align:center;padding:45px 18px}.lock{font-size:64px;animation:unlock .8s ease-out}.final h1{color:var(--cyan)}.name{color:#fff}.small{font-size:12px;color:var(--muted);margin-top:25px}
+:root {
+  --cyan: #52e5ff;
+  --green: #68ffc2;
+  --red: #ff4e70;
+  --bg: #050914;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: #ecf8ff;
+  background: radial-gradient(ellipse at top, #102c51, var(--bg) 72%);
+  font-family: Consolas, Monaco, monospace;
+  overflow-x: hidden;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg, transparent 0 3px, #48c9ff08 4px 5px
+  );
+  animation: scan 8s linear infinite;
+}
+
+#matrix {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: .15;
+  pointer-events: none;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  width: min(900px, 94%);
+  margin: 25px auto;
+}
+
+.panel {
+  background: rgba(6, 17, 33, .95);
+  border: 1px solid #17658a;
+  border-radius: 17px;
+  padding: clamp(22px, 5vw, 45px);
+  box-shadow: 0 0 35px #008cff20;
+  overflow: hidden;
+}
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+  animation: appear .65s ease both;
+}
+
+.logo {
+  color: var(--cyan);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.warning {
+  margin-top: 25px;
+  color: var(--red);
+  font-size: 12px;
+  letter-spacing: 2px;
+  animation: flicker 1.8s infinite;
+}
+
+h1 {
+  font-size: clamp(30px, 6vw, 51px);
+  line-height: 1.12;
+  margin: 22px 0 15px;
+  overflow-wrap: anywhere;
+  text-shadow: 0 0 24px #00baff35;
+}
+
+h2 {
+  font-size: clamp(22px, 4vw, 30px);
+  line-height: 1.35;
+}
+
+.sub {
+  color: #b7cce0;
+  font: 16px/1.8 Arial, sans-serif;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.pill {
+  padding: 7px 10px;
+  border: 1px solid #254b67;
+  border-radius: 20px;
+  font-size: 10px;
+  color: #b6d7e9;
+}
+
+.terminal {
+  min-height: 150px;
+  margin: 24px 0;
+  padding: 17px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  background: #02060c;
+  border: 1px solid #19445d;
+  border-left: 3px solid var(--cyan);
+  color: #83eaff;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 14px 19px;
+  border: 1px solid var(--cyan);
+  border-radius: 8px;
+  background: #071b30;
+  color: #f1fcff;
+  font: bold 13px Consolas, monospace;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.btn:hover {
+  background: #10304a;
+  box-shadow: 0 0 23px #00bfff45;
+  transform: translateY(-2px);
+}
+
+.progress {
+  height: 5px;
+  margin: 20px 0 28px;
+  background: #142339;
+}
+
+.bar {
+  height: 100%;
+  background: linear-gradient(90deg, #247dff, var(--cyan), var(--green));
+}
+
+.options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.option {
+  min-height: 58px;
+  padding: 15px;
+  text-align: left;
+  border: 1px solid #25465e;
+  border-radius: 9px;
+  background: #071321;
+  color: #e2f2ff;
+  font: 14px/1.5 Arial, sans-serif;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.option:hover:not(:disabled) {
+  border-color: var(--cyan);
+  background: #0b253a;
+}
+
+.option:disabled {
+  cursor: default;
+  opacity: .85;
+}
+
+.feedback {
+  display: none;
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.feedback.show {
+  display: block;
+  animation: pop .3s ease;
+}
+
+.feedback.success {
+  color: var(--green);
+  border: 1px solid var(--green);
+  background: #063121aa;
+}
+
+.feedback.error {
+  color: #ff91a6;
+  border: 1px solid var(--red);
+  background: #350c19aa;
+}
+
+.flash-success { animation: successFlash .8s; }
+.flash-error { animation: errorFlash .45s; }
+
+.small {
+  margin-top: 22px;
+  color: #809bb1;
+  font-size: 10px;
+  letter-spacing: 1px;
+  line-height: 1.8;
+}
+
+.final { text-align: center; }
+
+.unlock {
+  font-size: 55px;
+  animation: float 1.5s infinite;
+  filter: drop-shadow(0 0 17px var(--green));
+}
+
+.photo-frame {
+  width: min(380px, 100%);
+  margin: 28px auto;
+  padding: 7px;
+  border: 1px solid var(--cyan);
+  border-radius: 15px;
+  background: #07111f;
+  box-shadow: 0 0 32px #00bfff45;
+  animation: photoReveal 1.1s ease both;
+}
+
+.photo-frame img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 9px;
+}
+
+.photo-caption {
+  margin: 12px 0 5px;
+  color: var(--cyan);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.birthday-name {
+  color: var(--green);
+  text-shadow: 0 0 25px #65ffbd30;
+}
+
+.signature {
+  margin-top: 30px;
+  padding-top: 23px;
+  border-top: 1px solid #244252;
+}
+
+.signature-line {
+  color: #e9d6ad;
+  font: italic 23px Georgia, serif;
+}
+
+.signature-name {
+  margin-top: 7px;
+  color: #fff5df;
+  font: 500 clamp(32px, 7vw, 43px) Georgia, serif;
+  letter-spacing: 2px;
+}
+
+.trusted {
+  margin-top: 14px;
+  color: var(--green);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(15px); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+@keyframes scan {
+  to { background-position: 0 100px; }
+}
+
+@keyframes flicker {
+  0%, 90%, 100% { opacity: 1; }
+  93%, 96% { opacity: .3; }
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: scale(.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes successFlash {
+  35% { box-shadow: 0 0 35px #65ffbd45; filter: brightness(1.6); }
+}
+
+@keyframes errorFlash {
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes float {
+  50% { transform: translateY(-7px) rotate(-4deg); }
+}
+
+@keyframes photoReveal {
+  from { opacity: 0; transform: scale(.85) rotateY(12deg); filter: blur(5px) brightness(2); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+@media (max-width: 600px) {
+  .options { grid-template-columns: 1fr; }
+  .container { margin: 12px auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
 </style>
 </head>
-<body><div class="wrap">
-<section id="home" class="screen active"><div class="logo">SECURE CHANNEL // BIRTHDAY PROTOCOL v3.0</div><h1>ACCESS REQUIRED.</h1><p class="sub">A classified birthday file has been locked behind a small security test.</p><div class="terminal"><span class="bootline">[+] Establishing secure connection...</span><span class="bootline">[+] Scanning birthday file...</span><span class="bootline">[+] Encryption detected.</span><span class="bootline">[!] Direct access denied.</span><span class="bootline">[+] 3 security layers detected.</span><span class="bootline">[+] Waiting for authorized user... <span class="cursor">█</span></span></div><button class="btn" type="button" data-go="level1">INITIALIZE PROTOCOL →</button><div class="small">AUTHORIZED USER: ABDUL BASIT // STATUS: PENDING</div></section>
 
-<section id="level1" class="screen"><div class="feedback" aria-live="polite"><span></span></div><div class="logo">TRAINING SIMULATION // LEVEL 1/3</div><div class="progress"><div class="bar" style="width:33%"></div></div><h2>Which one is the strongest password?</h2><p class="sub">Choose the option that is hardest to guess.</p><div class="options"><button class="option" data-answer="wrong">A. abdul123</button><button class="option" data-answer="wrong">B. password2026</button><button class="option" data-answer="wrong">C. Basit@123</button><button class="option" data-answer="correct">D. 7v!Q2#kL9@pR</button></div></section>
+<body>
+<canvas id="matrix"></canvas>
 
-<section id="level2" class="screen"><div class="feedback" aria-live="polite"><span></span></div><div class="logo">TRAINING SIMULATION // LEVEL 2/3</div><div class="progress"><div class="bar" style="width:66%"></div></div><h2>A website sends you a suspicious password link. Safest move?</h2><p class="sub">Think like a defensive security analyst.</p><div class="options"><button class="option" data-answer="wrong">A. Click it quickly</button><button class="option" data-answer="wrong">B. Share your password to verify</button><button class="option" data-answer="correct">C. Open the official website separately</button><button class="option" data-answer="wrong">D. Send the link to everyone</button></div></section>
+<main class="container">
 
-<section id="level3" class="screen"><div class="feedback" aria-live="polite"><span></span></div><div class="logo">TRAINING SIMULATION // LEVEL 3/3</div><div class="progress"><div class="bar" style="width:100%"></div></div><h2>What is the main goal of cybersecurity?</h2><p class="sub">Think beyond “breaking into things”.</p><div class="options"><button class="option" data-answer="correct">A. Protect systems and data</button><button class="option" data-answer="wrong">B. Delete every file</button><button class="option" data-answer="wrong">C. Guess random passwords</button><button class="option" data-answer="wrong">D. Disable all networks</button></div></section>
+<!-- CINEMATIC INTRO -->
+<section id="intro" class="panel screen active">
+  <div class="logo">NEXUS SECURITY // PRIVATE CHANNEL</div>
 
-<section id="denied" class="screen"><div class="logo">SECURITY SYSTEM</div><h2 style="color:var(--red)">ACCESS DENIED. ❌</h2><p id="deniedText" class="sub">That answer triggered the security alarm. Try the level again.</p><button class="btn" id="retryBtn">↻ RETRY LEVEL</button></section>
+  <div class="pills">
+    <span class="pill">ENCRYPTION: ACTIVE</span>
+    <span class="pill">PROTOCOL: BIRTHDAY</span>
+    <span class="pill">CLEARANCE: RESTRICTED</span>
+  </div>
 
-<section id="final" class="screen final"><div class="lock">🔓</div><div class="logo">SECURITY CLEARANCE: GRANTED</div><h1>ACCESS GRANTED</h1><h1 class="name">HAPPY BIRTHDAY,<br>ABDUL BASIT! 🎂</h1><p class="sub">You cleared the system.<br><br>Keep learning.<br>Keep building.<br>Keep exploring.<br><br><b style="color:var(--green)">STATUS: LEGENDARY</b><br>THREAT LEVEL: FRIENDLY<br>FRIENDSHIP STATUS: SECURE ✓</p><div class="small">— Your fellow cyber guy Affan</div></section>
-</div>
+  <div class="warning">⚠ ALERT // UNKNOWN SIGNAL DETECTED</div>
+
+  <h1>A SIGNAL HAS BEEN INTERCEPTED.</h1>
+
+  <p class="sub">
+    An encrypted file has been detected.
+    Complete three security checks to reveal its classified contents.
+  </p>
+
+  <div id="terminal" class="terminal"></div>
+
+  <button class="btn" id="startBtn">INITIALIZE PROTOCOL →</button>
+
+  <div class="small">
+    TARGET: ABDUL BASIT<br>
+    AUTHORIZATION: PENDING
+  </div>
+</section>
+
+<!-- LEVEL 1 -->
+<section id="level1" class="panel screen">
+  <div class="logo">SECURITY SIMULATION // LEVEL 1/3</div>
+  <div class="progress"><div class="bar" style="width:33%"></div></div>
+
+  <h2>Which option is the strongest password?</h2>
+  <p class="sub">Choose the one that is hardest to guess.</p>
+
+  <div class="options">
+    <button class="option" data-answer="wrong">A. abdul123</button>
+    <button class="option" data-answer="wrong">B. password2026</button>
+    <button class="option" data-answer="wrong">C. Basit@123</button>
+    <button class="option" data-answer="correct">D. 7v!Q2#kL9@pR</button>
+  </div>
+
+  <div class="feedback"><span></span></div>
+</section>
+
+<!-- LEVEL 2 -->
+<section id="level2" class="panel screen">
+  <div class="logo">SECURITY SIMULATION // LEVEL 2/3</div>
+  <div class="progress"><div class="bar" style="width:66%"></div></div>
+
+  <h2>A suspicious link asks for your password. What is the safest move?</h2>
+  <p class="sub">Think like a defensive security analyst.</p>
+
+  <div class="options">
+    <button class="option" data-answer="wrong">A. Click it quickly</button>
+    <button class="option" data-answer="wrong">B. Share your password to verify</button>
+    <button class="option" data-answer="correct">C. Open the official website separately</button>
+    <button class="option" data-answer="wrong">D. Send the link to everyone</button>
+  </div>
+
+  <div class="feedback"><span></span></div>
+</section>
+
+<!-- LEVEL 3 -->
+<section id="level3" class="panel screen">
+  <div class="logo">SECURITY SIMULATION // LEVEL 3/3</div>
+  <div class="progress"><div class="bar" style="width:100%"></div></div>
+
+  <h2>What is the main goal of cybersecurity?</h2>
+  <p class="sub">Think beyond breaking into systems.</p>
+
+  <div class="options">
+    <button class="option" data-answer="correct">A. Protect systems and data</button>
+    <button class="option" data-answer="wrong">B. Delete every file</button>
+    <button class="option" data-answer="wrong">C. Guess random passwords</button>
+    <button class="option" data-answer="wrong">D. Disable all networks</button>
+  </div>
+
+  <div class="feedback"><span></span></div>
+</section>
+
+<!-- WRONG ANSWER -->
+<section id="denied" class="panel screen">
+  <div class="logo">SECURITY SYSTEM // ALERT</div>
+  <div class="warning">⚠ ACCESS DENIED</div>
+
+  <h1 style="color:var(--red)">VERIFICATION FAILED.</h1>
+  <p id="deniedText" class="sub">Try the level again.</p>
+
+  <button class="btn" id="retryBtn">↻ RETRY LEVEL</button>
+</section>
+
+<!-- FINAL REVEAL -->
+<section id="final" class="panel screen final">
+  <div class="unlock">🔓</div>
+  <div class="logo">SECURITY CLEARANCE: GRANTED</div>
+
+  <h1>ACCESS GRANTED</h1>
+  <div class="logo">IDENTITY VERIFIED // ABDUL BASIT</div>
+
+  <div class="photo-frame">
+    <!-- Upload the photo to the repository with this exact filename -->
+    <img
+      src="abdul-basit.jpg"
+      alt="Abdul Basit"
+      onerror="this.style.display='none';document.getElementById('photoMissing').style.display='block';"
+    >
+    <div id="photoMissing" class="sub" style="display:none;padding:20px">
+      Photo not found. Upload <b>abdul-basit.jpg</b> to the repository.
+    </div>
+    <div class="photo-caption">CYBER ANALYST // STATUS: LEGENDARY</div>
+  </div>
+
+  <h1 class="birthday-name">HAPPY BIRTHDAY,<br>ABDUL BASIT! 🎂</h1>
+
+  <p class="sub">
+    You cleared the system.<br><br>
+    Keep learning.<br>
+    Keep building.<br>
+    Keep exploring.<br><br>
+
+    <b style="color:var(--green)">STATUS: LEGENDARY</b><br>
+    THREAT LEVEL: FRIENDLY<br>
+    FRIENDSHIP STATUS: SECURE ✓
+  </p>
+
+  <div class="signature">
+    <div class="signature-line">Your fellow cyber guy</div>
+    <div class="signature-name">Affan.</div>
+    <div class="trusted">CONNECTION: TRUSTED</div>
+  </div>
+
+  <div class="small">END OF TRANSMISSION // FRIENDSHIP STATUS: SECURE</div>
+  <button class="btn" id="replayBtn">↻ REPLAY EXPERIENCE</button>
+</section>
+
+</main>
+
 <script>
-(()=>{let current=1,locked=false;const screens=[...document.querySelectorAll(".screen")];
-function show(id){screens.forEach(s=>s.classList.remove("active","success","error"));document.getElementById(id).classList.add("active");scrollTo({top:0,behavior:"smooth"})}
-document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));
-document.querySelectorAll(".option").forEach(b=>b.onclick=()=>{if(locked)return;const s=b.closest(".screen"),level=+s.id.replace("level",""),ok=b.dataset.answer==="correct",next=level===3?"final":"level"+(level+1),box=s.querySelector(".feedback"),txt=box.querySelector("span");locked=true;current=level;s.classList.add(ok?"success":"error");box.className="feedback show "+(ok?"success":"error");txt.textContent=ok?"ACCESS GRANTED ✓":"ACCESS DENIED ✕";setTimeout(()=>{box.className="feedback";s.classList.remove("success","error");locked=false;if(ok)show(next);else{document.getElementById("deniedText").textContent=level===2?"Good analysts verify suspicious links instead of trusting them. Try again.":level===3?"Think like a defender. Try again.":"That answer triggered the security alarm. Try the level again.";document.getElementById("retryBtn").textContent="↻ RETRY LEVEL "+level;show("denied")}},850)});
-document.getElementById("retryBtn").onclick=()=>show("level"+current);
+(() => {
+  const screens = [...document.querySelectorAll(".screen")];
+  let currentLevel = 1;
+  let locked = false;
+  let audioContext;
+
+  // Cinematic terminal typing animation
+  const terminal = document.getElementById("terminal");
+  const lines = [
+    "[+] Establishing encrypted channel...",
+    "[+] Scanning incoming signal...",
+    "[!] Birthday file is locked.",
+    "[+] Three verification layers detected.",
+    "[+] Awaiting authorized user input...",
+    "",
+    ">>> Complete all three levels to unlock the message."
+  ];
+
+  let lineIndex = 0;
+  let charIndex = 0;
+
+  function typeTerminal() {
+    if (lineIndex >= lines.length) {
+      terminal.textContent += "█";
+      return;
+    }
+
+    if (charIndex < lines[lineIndex].length) {
+      terminal.textContent += lines[lineIndex][charIndex++];
+      setTimeout(typeTerminal, 22);
+    } else {
+      terminal.textContent += "\n";
+      lineIndex++;
+      charIndex = 0;
+      setTimeout(typeTerminal, 100);
+    }
+  }
+
+  typeTerminal();
+
+  // Small synthesized sound effects; no audio file is required.
+  function playTone(freq, duration = 0.12, type = "sine", volume = 0.025) {
+    try {
+      audioContext = audioContext ||
+        new (window.AudioContext || window.webkitAudioContext)();
+
+      if (audioContext.state === "suspended") audioContext.resume();
+
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+
+      oscillator.type = type;
+      oscillator.frequency.value = freq;
+      gain.gain.value = volume;
+      gain.gain.exponentialRampToValueAtTime(
+        0.001, audioContext.currentTime + duration
+      );
+
+      oscillator.connect(gain);
+      gain.connect(audioContext.destination);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + duration);
+    } catch (error) {
+      // The experience still works if sound is unavailable.
+    }
+  }
+
+  function sound(kind) {
+    if (kind === "click") {
+      playTone(520, 0.06, "square", 0.018);
+    }
+
+    if (kind === "correct") {
+      playTone(660);
+      setTimeout(() => playTone(880, 0.16), 100);
+    }
+
+    if (kind === "wrong") {
+      playTone(210, 0.18, "sawtooth");
+      setTimeout(() => playTone(145, 0.2, "sawtooth"), 110);
+    }
+
+    if (kind === "unlock") {
+      playTone(440);
+      setTimeout(() => playTone(660), 130);
+      setTimeout(() => playTone(990, 0.3), 260);
+    }
+  }
+
+  function showScreen(id) {
+    screens.forEach(screen => {
+      screen.classList.remove("active", "flash-success", "flash-error");
+    });
+
+    document.getElementById(id).classList.add("active");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    if (id === "final") sound("unlock");
+  }
+
+  document.getElementById("startBtn").addEventListener("click", () => {
+    sound("click");
+    showScreen("level1");
+  });
+
+  document.querySelectorAll(".option").forEach(button => {
+    button.addEventListener("click", () => {
+      if (locked) return;
+      locked = true;
+
+      sound("click");
+
+      const section = button.closest(".screen");
+      const level = Number(section.id.replace("level", ""));
+      const isCorrect = button.dataset.answer === "correct";
+      const feedback = section.querySelector(".feedback");
+
+      currentLevel = level;
+
+      // No answer is highlighted until the user chooses one.
+      section.querySelectorAll(".option").forEach(option => {
+        option.disabled = true;
+      });
+
+      section.classList.add(isCorrect ? "flash-success" : "flash-error");
+      feedback.className = "feedback show " +
+        (isCorrect ? "success" : "error");
+
+      feedback.querySelector("span").textContent = isCorrect
+        ? "ACCESS GRANTED ✓"
+        : "ACCESS DENIED ✕";
+
+      sound(isCorrect ? "correct" : "wrong");
+
+      setTimeout(() => {
+        feedback.className = "feedback";
+        section.classList.remove("flash-success", "flash-error");
+
+        section.querySelectorAll(".option").forEach(option => {
+          option.disabled = false;
+        });
+
+        locked = false;
+
+        if (isCorrect) {
+          showScreen(level === 3 ? "final" : "level" + (level + 1));
+        } else {
+          document.getElementById("deniedText").textContent =
+            "Verification failed. Trust your instincts, think carefully, and try Level " +
+            level + " again.";
+
+          document.getElementById("retryBtn").textContent =
+            "↻ RETRY LEVEL " + level;
+
+          showScreen("denied");
+        }
+      }, 850);
+    });
+  });
+
+  document.getElementById("retryBtn").addEventListener("click", () => {
+    sound("click");
+    showScreen("level" + currentLevel);
+  });
+
+  document.getElementById("replayBtn").addEventListener("click", () => {
+    sound("click");
+    currentLevel = 1;
+    showScreen("intro");
+  });
+
+  // Decorative animated binary background.
+  const canvas = document.getElementById("matrix");
+  const ctx = canvas.getContext("2d");
+  let width, height, drops = [];
+
+  function resizeCanvas() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    drops = Array(Math.ceil(width / 18)).fill(1);
+  }
+
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas();
+
+  function drawMatrix() {
+    ctx.fillStyle = "rgba(5, 9, 20, 0.12)";
+    ctx.fillRect(0, 0, width, height);
+    ctx.fillStyle = "#35baff";
+    ctx.font = "13px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+      ctx.fillText(Math.random() > 0.5 ? "1" : "0", i * 18, drops[i] * 18);
+
+      if (drops[i] * 18 > height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+
+      drops[i]++;
+    }
+
+    requestAnimationFrame(drawMatrix);
+  }
+
+  drawMatrix();
 })();
-</script></body></html>
+</script>
+</body>
+</html>
